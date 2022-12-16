@@ -3,9 +3,9 @@ import pygame
 from numpy import sin
 from numpy import cos
 
-
-RED = 
-LIGHT_GRAY =
+battle_screen = pygame.display.setmode((500,500))#потом убрать
+RED = (255, 0, 0)
+LIGHT_GRAY =(200, 200, 200)
 
 
 def graph_evaluator(i, graph_string):
