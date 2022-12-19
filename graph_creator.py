@@ -1,9 +1,8 @@
 import simpleeval as se
 import pygame
 import numpy as np
-import Soldiers
+from Soldiers import  Soldier
 
-battle_screen = pygame.display.setmode((500, 500))  # потом убрать
 RED = (255, 0, 0)
 LIGHT_GRAY = (200, 200, 200)
 L_WIGHT = 2
@@ -46,10 +45,9 @@ class Line:
 
 
 def kill_check(xi, yi):
-    for soldier in Soldiers:
+    for soldier in Soldier:
         soldier.self_kill_check(soldier, xi, yi)
 # FIXME проверить работу
 
 
 '''Проверяет попадание в солдата с координатами self.x и self.y графиком, с текущими координатами xi и yi'''
-
