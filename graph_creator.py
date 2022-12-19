@@ -23,13 +23,13 @@ def graph_evaluate(i, graph_string):
 
 class Line:
 
-    def __init__(self, x0, y0, x1, y1, screen):
+    def __init__(self, x0, y0, x1, y1, screen, color):
         self.screen = screen
         self.x0 = x0
         self.y0 = y0
         self.x1 = x1
         self.y1 = y1
-        self.color = RED
+        self.color = color
         self.active = True
         self.wight = L_WIGHT
 
@@ -47,17 +47,9 @@ class Line:
 
 def kill_check(xi, yi):
     for soldier in Soldiers:
-        if (xi - soldier.x) ** 2 + (yi - soldier.y) ** 2 <= soldier.r ** 2:
-            soldier.death()
+        soldier.self_kill_check(soldier, xi, yi)
+# FIXME проверить работу
 
 
 '''Проверяет попадание в солдата с координатами self.x и self.y графиком, с текущими координатами xi и yi'''
 
-
-def graph_clean():
-    for line in Line:
-        if line.active:
-            line.deactivate()  # мб убрать
-
-
-'''Переводит график в остывшее состояние'''

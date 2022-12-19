@@ -10,21 +10,34 @@ class Soldier:
         self.y = y
         self.team = team
         self.screen = screen
+        self.r = R
+        self.r_i = R_I
 
     def draw_red(self):
-        pygame.draw.circle(self.screen, RED, (self.x, self.y), R)
-        pygame.draw.circle(self.screen, LIGHT_RED, (self.x, self.y), R_I)
+        pygame.draw.circle(self.screen, RED, (self.x, self.y), self.r)
+        pygame.draw.circle(self.screen, LIGHT_RED, (self.x, self.y), self.r_i)
 
     def draw_blue(self):
-        pygame.draw.circle(self.screen, BLUE, (self.x, self.y), R)
-        pygame.draw.circle(self.screen, LIGHT_BLUE, (self.x, self.y), R_I)
+        pygame.draw.circle(self.screen, BLUE, (self.x, self.y), self.r)
+        pygame.draw.circle(self.screen, LIGHT_BLUE, (self.x, self.y), self.r_i)
 
     def draw_dead(self):
-        pygame.draw.circle(self.screen, GRAY, (self.x, self.y), R)
+        pygame.draw.circle(self.screen, GRAY, (self.x, self.y), self.r)
         pygame.draw.circle(self.screen, LIGHT_GRAY, (self.x, self.y), R_I)
 
+    def alive(self):
+        return self.alive
+
     def team(self):
-        return self.team()
+        return self.team
+
+    def self_kill_check(self, x, y):
+        if (x - self.x) ** 2 + (y - self.y) ** 2 <= self.r ** 2:
+            self.death()
+
+    def death(self):
+        self.alive = False
+        # возможно добавлю взрыв
 
 
 GRAY = (100, 100, 100)
