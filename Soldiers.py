@@ -1,9 +1,19 @@
 import pygame
 
+soldiers = []  # возможно придется убрать
+
 
 class Soldier:
 
     def __init__(self, x, y, team, screen, number):
+        """
+        Конструктор класса Soldier
+        :param x: x-координата
+        :param y: y-координата
+        :param team: команда ('Blue', или 'Red')
+        :param screen: экран отрисовки
+        :param number: порядковый номер
+        """
         self.number = number
         self.alive = True
         self.x = x
@@ -12,32 +22,52 @@ class Soldier:
         self.screen = screen
         self.r = R
         self.r_i = R_I
+        soldiers.append(self)
 
-    def draw_red(self):
-        pygame.draw.circle(self.screen, RED, (self.x, self.y), self.r)
-        pygame.draw.circle(self.screen, LIGHT_RED, (self.x, self.y), self.r_i)
+    def color1(self):
+        """
+        сопоставляет живым солдатам из команд и мертвым солдатам основной цвет отрисовки
+        'Red' - RED
+        'Blue' - BLUE
+        alive == FALSE - GRAY
 
-    def draw_blue(self):
-        pygame.draw.circle(self.screen, BLUE, (self.x, self.y), self.r)
-        pygame.draw.circle(self.screen, LIGHT_BLUE, (self.x, self.y), self.r_i)
+        """
+        if self.alive and self.team == 'Blue':
+            return BLUE
+        elif self.alive and self.team == 'Red':
+            return RED
+        else:
+            return GRAY
 
-    def draw_dead(self):
-        pygame.draw.circle(self.screen, GRAY, (self.x, self.y), self.r)
-        pygame.draw.circle(self.screen, LIGHT_GRAY, (self.x, self.y), R_I)
+    def color2(self):
+        """
+        сопоставляет живым солдатам из команд и мертвым солдатам вторичный цвет отрисовки
+        'Red' - LIGHT_RED
+        'Blue' - LIGHT_BLUE
+        alive == FALSE - LIGHT_GRAY
+        """
+        if self.alive and self.team == 'Blue':
+            return LIGHT_BLUE
+        elif self.alive and self.team == 'Red':
+            return LIGHT_RED
+        else:
+            return LIGHT_GRAY
 
-    def alive(self):
-        return self.alive
+    def draw(self):
+        """
+        Отрисовывает солдат в 2 цвета
+        """
+        pygame.draw.circle(self.screen, self.color1, (self.x, self.y), self.r)
+        pygame.draw.circle(self.screen, self.color2, (self.x, self.y), self.r_i)
 
-    def team(self):
-        return self.team
-
-    def self_kill_check(self, x, y):
-        if (x - self.x) ** 2 + (y - self.y) ** 2 <= self.r ** 2:
-            self.death()
-
-    def death(self):
+    def hit(self):
+        """
+        Убивает солдата при попадании
+        :return: False - для hit_test
+        """
         self.alive = False
-        # возможно добавлю взрыв
+        return False
+        # возможно добавлю звук
 
 
 GRAY = (100, 100, 100)
