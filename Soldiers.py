@@ -1,24 +1,37 @@
+import pygame
+
+
 class Soldier:
 
-
-    def __init__(self, x, y, team):
+    def __init__(self, x, y, team, screen, number):
+        self.number = number
+        self.alive = True
         self.x = x
         self.y = y
         self.team = team
-        self.screen = pygame.battle_screen
-        if team == 'RED':
-            pygame.draw.circle(screen, RED, (x, y), r)
+        self.screen = screen
 
-        elif team == 'BLUE':
-            pygame.draw.circle(screen, BLUE, (x, y), r)
+    def draw_red(self):
+        pygame.draw.circle(self.screen, RED, (self.x, self.y), R)
+        pygame.draw.circle(self.screen, LIGHT_RED, (self.x, self.y), R_I)
 
-    alive = True
-    his_turn = False
-    team = ''
-    x = 0
-    y = 0
-    r = 10
+    def draw_blue(self):
+        pygame.draw.circle(self.screen, BLUE, (self.x, self.y), R)
+        pygame.draw.circle(self.screen, LIGHT_BLUE, (self.x, self.y), R_I)
+
+    def draw_dead(self):
+        pygame.draw.circle(self.screen, GRAY, (self.x, self.y), R)
+        pygame.draw.circle(self.screen, LIGHT_GRAY, (self.x, self.y), R_I)
+
+    def team(self):
+        return self.team()
 
 
+GRAY = (100, 100, 100)
+LIGHT_GRAY = (200, 200, 200)
 BLUE = (0, 0, 255)
 RED = (255, 0, 0)
+LIGHT_RED = (200, 0, 0)
+LIGHT_BLUE = (0, 0, 200)
+R = 10
+R_I = 8
