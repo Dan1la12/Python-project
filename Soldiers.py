@@ -1,6 +1,16 @@
 import pygame
 
 soldiers = []  # возможно придется убрать
+GRAY = (100, 100, 100)
+LIGHT_GRAY = (200, 200, 200)
+BLUE = (0, 0, 255)
+RED = (255, 0, 0)
+LIGHT_RED = (200, 0, 0)
+LIGHT_BLUE = (0, 0, 200)
+TRANSPARENT_RED = (255, 0, 0, 0.4)
+TRANSPARENT_BLUE = (0, 0, 255, 0.4)
+R = 10
+R_I = 8
 
 
 class Soldier:
@@ -70,11 +80,41 @@ class Soldier:
         # возможно добавлю звук
 
 
-GRAY = (100, 100, 100)
-LIGHT_GRAY = (200, 200, 200)
-BLUE = (0, 0, 255)
-RED = (255, 0, 0)
-LIGHT_RED = (200, 0, 0)
-LIGHT_BLUE = (0, 0, 200)
-R = 10
-R_I = 8
+class PlaceCircle:
+    def __init__(self, screen, team, x, y):
+        """
+        Конструктор класса PlaceCircle - вспомогательного кружка при размещении солдат игроками
+        :param screen: экран отрисовки
+        :param team: команда, к которой он принадлежит
+        :param x: x-координата
+        :param y: y-координата
+        """
+        self.screen = screen
+        self.y = y
+        self.x = x
+        self.team = team
+        self.r = R
+
+    def color(self):
+        """
+        сопоставляет цвет своей комагде
+        """
+        if self.team == 'Blue':
+            return TRANSPARENT_BLUE
+        elif self.team == 'Red':
+            return TRANSPARENT_RED
+
+    def draw(self):
+        """
+        Отрисовывает вспомогательный кружок
+        """
+        pygame.draw.circle(self.screen, self.color(), (self.x, self.y), self.r)
+
+    def move(self, x, y):
+        """
+        Перемещает его (вслед за мышкой)
+        :param x: новая x-координата
+        :param y: новая y-координата
+        """
+        self.x = x
+        self.y = y
