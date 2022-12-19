@@ -2,6 +2,8 @@ import pygame
 from random import randint
 
 Battle_screen = pygame.Surface((1040, 720))
+circles = []
+white_circles = []
 
 
 class Circle:
@@ -12,9 +14,8 @@ class Circle:
         self.color = BLACK
         self.screen = screen
 
-    def hit_test(self, obj):
-        if (obj.x - self.x) ** 2 + (obj.y - self.y) ** 2 <= self.r ** 2:
-            boom(obj.x, obj.y)
+    def hit(self):
+        white_circle = WhiteCircle()
             return True
 
     def draw(self):
@@ -45,7 +46,8 @@ def obj_generate(screen):
         x = randint(40, 1000)
         y = randint(40, 660)
         r = randint(40-a, 300-10*a)
-        Circle(screen, x, y, r)
+        circle = Circle(screen, x, y, r)
+        circles.apend(circle)
 
 
 BLACK = (0, 0, 0)
