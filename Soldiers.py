@@ -75,7 +75,6 @@ class Soldier:
         :return: False - для hit_test
         """
         self.alive = False
-        return False
         # возможно добавлю звук
 
 

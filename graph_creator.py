@@ -2,8 +2,8 @@ import simpleeval as se
 import pygame
 import numpy as np
 from Objects import WhiteCircle
-from Objects import white_circles
-
+from Objects import white_circles, circles
+from Soldiers import soldiers, R
 RED = (255, 0, 0)
 BLUE = (0, 0, 255)
 YELLOW = (255, 225, 0)
@@ -11,7 +11,7 @@ GREEN = (0, 0, 255)
 LIGHT_GRAY = (200, 200, 200)
 """Цвета"""
 L_WIGHT = 1  # Ширина линии
-MARKER_R = 2  # Радиус маркера
+MARKER_R = 4  # Радиус маркера
 markers = []  # список маркеров
 lines = []  # Список линий
 
@@ -93,17 +93,17 @@ class Marker:
         markers.append(self)
         self.active = True
 
-    def draw(self):
-        """
-        отрисовывает маркер
-        """
-        pygame.draw.circle(self.screen, self.color(), (self.x, self.y), self.r)
-
     def color(self):
         if self.team == 'Red':
             return YELLOW
         elif self.team == 'Blue':
             return GREEN
+
+    def draw(self):
+        """
+        отрисовывает маркер
+        """
+        pygame.draw.circle(self.screen, self.color(), (self.x, self.y), self.r)
 
     def line_color(self):
         if self.team == 'Red':
@@ -138,8 +138,8 @@ class Marker:
         :param obj: объект, с которым проверяется столкновение
         """
         for circle in white_circles:
-            if obj.alive and (self.x - obj.x) ** 2 + (self.y - obj.y) ** 2 <= obj.r ** 2 and (circle.x+self.x)**2 + \
-                    (circle.y+self.y)**2 >= circle.r**2:
+            if obj.alive and (self.x - obj.x) ** 2 + (self.y - obj.y) ** 2 <= obj.r ** 2 and (circle.x + self.x) ** 2 + \
+                    (circle.y + self.y) ** 2 >= circle.r ** 2:
                 """
                 Проверяет попадание в объект
                 """
@@ -151,3 +151,19 @@ class Marker:
                     white_circle = WhiteCircle(self.screen, self.x, self.y)
                     white_circles.append(white_circle)
                     self.active = False
+
+    def soldier_hit_check(self, number, team):
+        for s in soldiers:
+            if (s.x - self.x) ** 2 + (s.y - self.y) ** 2 <= R ** 2 and not (s.number == number and s.team == team):
+                s.hit()
+
+    def object_hit_check(self, screen):
+        for c in circles:
+            if (c.x - self.x) ** 2 + (c.y - self.y) ** 2 <= c.r ** 2:
+                # for wc in white_circles:
+                #     if (wc.x - self.x) ** 2 + (wc.y - self.y) ** 2 <= wc.r:
+                #         break
+                WhiteCircle(screen, self.x, self.y)
+
+
+

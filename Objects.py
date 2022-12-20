@@ -26,13 +26,6 @@ class Circle:
         self.screen = screen
         self.alive = True  # для hit_check, препятствие всегда alive = True
 
-    @staticmethod
-    def hit(self):
-        """
-        Вызывает попадание, для hit_test
-        """
-        return True
-
     def draw(self):
         """
         Отрисовывает препятствие
@@ -53,6 +46,7 @@ class WhiteCircle:
         self.x = x
         self.r = BOOM_R  # радиус
         self.color = WHITE  # цвет
+        white_circles.append(self)
 
     def draw(self):
         """
