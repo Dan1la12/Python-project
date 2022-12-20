@@ -2,22 +2,53 @@ from Objects import circles
 from Soldiers import Soldier, soldiers, R
 
 
-def place_aval(x, y):
-    objects = circles + soldiers
+def place_aval_circle(x, y):
+    """
+    Проверяет находится ли (x, y) на расстоянии R от любого препятствия
+    Args:
+        x: x-координата
+        y: y-координата
 
-    for o in objects:
-        if (o.x - x) ** 2 + (o.y - y) ** 2 <= (o.r + R) ** 2:
+    Returns: False, если находится хоть в каком-то, иначе True
+
+    """
+    for c in circles:
+        if (c.x - x) ** 2 + (c.y - y) ** 2 <= (c.r + R) ** 2:
             return False
-        else:
-            return True
+        elif (c.x - x) ** 2 + (c.y - y) ** 2 <= (c.r + R) ** 2:
+            pass  # без этого не работает
+    return True
+
+
+def place_aval_soldier(x, y):
+    """
+    Проверяет находится ли (x, y) на расстоянии R от любого солдата
+    Args:
+        x: x-координата
+        y: y-координата
+
+    Returns: False, если находится хоть в каком-то, иначе True
+
+    """
+    if not soldiers == []:
+        for s in soldiers:
+            if (s.x - x) ** 2 + (s.y - y) ** 2 <= 4 * R ** 2:
+                return False
+            elif (s.x - x) ** 2 + (s.y - y) ** 2 >= 4 * R ** 2:
+                pass  # без этого не работает
+    return True
+
+
+def place_aval_zone(zone, x, y):
+    return zone.collidepoint(x, y)
 
 
 def place_soldier(x, y, screen, n):
-    if n%2 == 1:
-        s = Soldier(x, y, 'Blue', screen, n//2+1)
+    if n % 2 == 1:
+        s = Soldier(x, y, 'Blue', screen, n // 2 + 1)
         soldiers.append(s)
-    elif n%2 ==0:
-        s = Soldier(x, y, 'Red', screen, n//2+1)
+    elif n % 2 == 0:
+        s = Soldier(x, y, 'Red', screen, n // 2 + 1)
         soldiers.append(s)
 
 
