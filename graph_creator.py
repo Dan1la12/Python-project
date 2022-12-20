@@ -55,7 +55,8 @@ class Line:
         self.screen = screen
         self.x0 = x0
         self.y0 = y0
-	@@ -31,23 +62,94 @@ def __init__(self, x0, y0, x1, y1, screen, color):
+        self.x1 = x1
+        self.y1 = y1
         self.color = color
         self.active = True
         self.wight = L_WIGHT
@@ -96,7 +97,7 @@ class Marker:
         """
         отрисовывает маркер
         """
-        pygame.draw.circle(self.screen, self.color, (self.x, self.y), self.r)
+        pygame.draw.circle(self.screen, self.color(), (self.x, self.y), self.r)
 
     def color(self):
         if self.team == 'Red':
@@ -117,7 +118,7 @@ class Marker:
         :param y: новая y-координата
         :return: s - квадрат длинны графика
         """
-        Line(self.x, self.y, x, y, self.screen, self.line_color)
+        Line(self.x, self.y, x, y, self.screen, self.line_color())
         self.x = x
         self.y = y
         return (x - self.x) ** 2 + (y - self.y) ** 2
