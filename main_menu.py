@@ -45,13 +45,16 @@ def main():
                 pygame.quit()
                 # checks if a mouse is clicked
             if ev.type == pygame.MOUSEBUTTONDOWN:
-                classes.Button.Play_button(screen, ev, mousepos, [150, 150, 100, 50], smallfont)
+                play = classes.Button(screen, [150, 150, 100, 50], smallfont, mousepos, ev)
+                play.Play_button()
 
         # fills the screen with a color 
         screen.fill(GREEN)
 
-        classes.Button.Quit_button(screen, mousepos, [150, 250, 100, 50], smallfont)
-        classes.Button.Play_button(screen, None, mousepos, [150, 150, 100, 50], smallfont)
+        quit = classes.Button(screen, [150, 250, 100, 50], smallfont, mousepos, None)
+        quit.Quit_button()
+        play = classes.Button(screen, [150, 150, 100, 50], smallfont, mousepos, None)
+        play.Play_button()
 
         # updates the frames of the game 
         pygame.display.update()

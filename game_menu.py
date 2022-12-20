@@ -52,7 +52,8 @@ def execution():
     while True:
         screen = pygame.display.set_mode((1080, 880))
         screen.fill(GREEN)
-        classes.Window.Game_window(screen, game_rect)
+        game_window = classes.Window(screen, game_rect, base_font, None)
+        game_window.Game_window()
         mousepos = pygame.mouse.get_pos()
         global is_game
         for ev in pygame.event.get():
@@ -86,8 +87,20 @@ def execution():
                 pygame.quit()
                 sys.exit()
             # checks if a mouse is clicked
+            global active
             if ev.type == pygame.MOUSEBUTTONDOWN:
-                classes.Button.Click(ev, mousepos, user_formula)
+                if input_rect.collidepoint(mousepos[0], mousepos[1]):
+                    active = True
+                    inputstr = classes.Window(screen, input_rect, base_font, None)
+                else:
+                    active = False
+                    inputstr = classes.Window(screen, input_rect, base_font, None)
+
+                inputstr.Input_window(user_formula)
+
+
+                quit = classes.Button(screen, [500, 800, 100, 50], smallfont, mousepos, ev)
+                quit.Quit_button()
                 '''
                 if input_rect.collidepoint(ev.pos):
                     global active
@@ -103,14 +116,19 @@ def execution():
         if is_game:
             global turn_number
 
-        classes.Window.History_window(screen, None, base_font)
-        classes.Window.Input_window(screen, BLACK, input_rect, user_formula, None, base_font)
+        history = classes.Window(screen, None, base_font, None)
+        history.History_window()
+
+        inputstr = classes.Window(screen, input_rect, base_font, None)
+        inputstr.Input_window(user_formula)
         for s in soldiers:
             s.draw()
         for c in circles:
             c.draw()
-        classes.Button.Quit_button(screen, mousepos, [500, 800, 100, 50], smallfont)
-        classes.Button.Fire_button(screen, mousepos, [300, 800, 100, 50], smallfont)
+        quit = classes.Button(screen, [500, 800, 100, 50], smallfont, mousepos, None)
+        quit.Quit_button()
+        fire = classes.Button(screen, [300, 800, 100, 50], smallfont, mousepos, None)
+        fire.Fire_button()
 
         pygame.display.flip()
         clock.tick(60)
