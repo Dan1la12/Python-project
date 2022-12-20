@@ -4,6 +4,7 @@ import classes
 from Objects import Circle, circles, obj_generate
 from Players import place_aval_circle, place_aval_soldier, place_aval_zone
 from Soldiers import PlaceCircle, soldiers, R, Soldier
+from graph_creator import Marker, markers, lines
 
 pygame.init()
 WHITE = (255, 255, 255)
@@ -44,7 +45,13 @@ circles.append(o1)
 # test_dead_body = Soldier(500, 500, 'Red', screen, 2)
 # test_dead_body.hit()
 is_game = False
-turn_number = 0
+find_red_soldier = True
+red_turn_number = 0
+x_fire = 0
+y_fire = 0
+n_fire = 100
+team_fire = ''
+Fire = False
 
 
 def execution():
@@ -113,8 +120,25 @@ def execution():
                     else:
                         user_formula += ev.unicode
 
+        global find_red_soldier, red_turn_number, x_fire, y_fire, n_fire, team_fire
         if is_game:
-            global turn_number
+            while find_red_soldier:
+                for s in soldiers:
+                    if s.number == red_turn_number and s.team == 'red' and s.alive:
+                        x_fire = s.x
+                        y_fire = s.y
+                        n_fire = s.number
+                        team_fire = 'red'
+                        find_red_soldier = False
+                    red_turn_number += 1
+                    red_turn_number %= 5
+            if team_fire == 'Red' and classes.Button.Fire_button():
+                if not markers:
+                    Marker(x_fire, y_fire, team_fire, screen)
+                for m in markers:
+                    m.draw()
+                    m.soldier_hit_check(n_fire, team_fire)
+
 
         history = classes.Window(screen, None, base_font, None)
         history.History_window()
