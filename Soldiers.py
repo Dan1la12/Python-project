@@ -5,12 +5,12 @@ GRAY = (100, 100, 100)
 LIGHT_GRAY = (200, 200, 200)
 BLUE = (0, 0, 255)
 RED = (255, 0, 0)
-LIGHT_RED = (200, 0, 0)
-LIGHT_BLUE = (0, 0, 200)
-TRANSPARENT_RED = (255, 0, 0, 0.4)
-TRANSPARENT_BLUE = (0, 0, 255, 0.4)
-R = 10
-R_I = 8
+LIGHT_RED = (255, 70, 70)
+LIGHT_BLUE = (70, 70, 255)
+TRANSPARENT_RED = (255, 200, 200, 0.4)
+TRANSPARENT_BLUE = (200, 200, 255, 0.4)
+R = 20
+R_I = 16
 
 
 class Soldier:
@@ -66,8 +66,8 @@ class Soldier:
         """
         Отрисовывает солдат в 2 цвета
         """
-        pygame.draw.circle(self.screen, self.color1, (self.x, self.y), self.r)
-        pygame.draw.circle(self.screen, self.color2, (self.x, self.y), self.r_i)
+        pygame.draw.circle(self.screen, self.color1(), (self.x, self.y), self.r)
+        pygame.draw.circle(self.screen, self.color2(), (self.x, self.y), self.r_i)
 
     def hit(self):
         """
