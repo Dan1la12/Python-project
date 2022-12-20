@@ -16,16 +16,26 @@ COLORS = [WHITE, RED, BLUE, YELLOW, GREEN, MAGENTA, CYAN, DARK, BLACK]
 
 class Window:
 
-    def Game_window(screen):
-        pygame.draw.rect(screen,WHITE,[20,20,1040,700])
+    def Game_window(screen, rect):
+        game_window = pygame.draw.rect(screen,WHITE,rect)
+        return game_window
 
  
     def History_window(screen, event, font):
+        history_rect =  pygame.draw.rect(screen,WHITE,[650,750,400,100])
         if event != None:
             if event.y == 1:
                 x += 1
             if event.y == -1:
                 x -= 1
+        '''
+        if history_rect.collidepoint():
+            print('I am  here')
+            with open('History.txt', 'w') as History:
+                History.write(formula)
+            global active
+            active = False
+            '''
         with open('History.txt', 'r') as History:
             n = 0
             for line in History:
@@ -103,12 +113,6 @@ class Button:
         screen.blit(text_quit, (rect[0]+25,rect[1])) 
      
     def Click(event, mouse, formula):
-        if 50 <= mouse[0] <= 150 and 20 <= mouse[1] <= 40:
-            print('I am  here')
-            with open('History.txt', 'w') as History:
-                History.write(formula)
-            global active
-            active = False
         if 500 <= mouse[0] <= 600 and 800 <= mouse[1] <= 850:
             pygame.quit()
 

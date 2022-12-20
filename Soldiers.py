@@ -40,7 +40,6 @@ class Soldier:
         'Red' - RED
         'Blue' - BLUE
         alive == FALSE - GRAY
-
         """
         if self.alive and self.team == 'Blue':
             return BLUE
