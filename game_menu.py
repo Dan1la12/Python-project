@@ -24,9 +24,8 @@ base_font = pygame.font.Font(None, 32)
 soldiers_count = 0
 input_rect = pygame.Rect(300, 750, 200, 30)
 game_rect = pygame.Rect(20, 20, 1040, 700)
-place_rect = pygame.Rect(20 + R, 20 + R, 1040 - 2 * R, 700 - 2 * R)
-red_place_rect = pygame.Rect(20 + R, 20 + R, 520 - 2 * R, 700 - 2 * R)
-blue_place_rect = pygame.Rect(520 + 2 * R, 20 + R, 1040 - 2 * R, 700 - 2 * R)
+red_place_rect = pygame.Rect(20 + R, 20 + R, 520 - R, 700 - 2*R)
+blue_place_rect = pygame.Rect(520 + R, 20 + R, 520 - R, 700 - 2*R)
 
 color_active = pygame.Color('lightskyblue3')
 color_passive = pygame.Color('gray15')
@@ -44,6 +43,8 @@ o1 = Circle(screen, 300, 300, 50)
 circles.append(o1)
 # test_dead_body = Soldier(500, 500, 'Red', screen, 2)
 # test_dead_body.hit()
+is_game = False
+turn_number = 0
 
 
 def execution():
@@ -53,7 +54,7 @@ def execution():
         screen.fill(GREEN)
         classes.Window.Game_window(screen, game_rect)
         mousepos = pygame.mouse.get_pos()
-
+        global is_game
         for ev in pygame.event.get():
             global soldiers_count
             x, y = mousepos
@@ -77,7 +78,10 @@ def execution():
                         ps = PlaceCircle(screen, 'Blue', x, y)
                     ps.move(x, y)
                     ps.draw()
-                # and classes.Window.Game_window(screen).collidepoint(ev.pos)
+            else:
+                if not is_game:
+                    is_game = True
+
             if ev.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
@@ -95,6 +99,9 @@ def execution():
                         user_formula = user_formula[:-1]
                     else:
                         user_formula += ev.unicode
+
+        if is_game:
+            global turn_number
 
         classes.Window.History_window(screen, None, base_font)
         classes.Window.Input_window(screen, BLACK, input_rect, user_formula, None, base_font)
