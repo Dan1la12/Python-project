@@ -103,8 +103,11 @@ class Button:
         text_fire = self.font.render('Fire', True, WHITE)
         if 300 <= self.mouse[0] <= 400 and 800 <= self.mouse[1] <= 850:
             pygame.draw.rect(self.screen, BLACK, self.rect)
-            if self.event.type == pygame.MOUSEBUTTONDOWN:
-                return True
+            global is_fire, active
+            if self.event != None:
+                is_Fire = True
+                active = False
+                return is_Fire, active
         else:
             pygame.draw.rect(self.screen, DARK, self.rect)
         self.screen.blit(text_fire, (self.rect[0] + 30, self.rect[1]))

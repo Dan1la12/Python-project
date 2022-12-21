@@ -37,7 +37,7 @@ color = color_passive
 
 active = False
 
-# defining a font 
+# defining a font
 smallfont = pygame.font.SysFont('Corbel', 35)
 
 text_quit = smallfont.render('Quit', True, WHITE)
@@ -66,7 +66,7 @@ def execution():
         game_window = classes.Window(screen, game_rect, base_font, None)
         game_window.Game_window()
         mousepos = pygame.mouse.get_pos()
-        global is_game  #показывает началась игра, или нет
+        global is_game  # показывает началась игра, или нет
         for ev in pygame.event.get():
             global soldiers_count
             x, y = mousepos
@@ -74,7 +74,7 @@ def execution():
                 """
                 Проверяет сколько солдат поставлено и при нажатии мыши ставит синего солдата, 
                 если их нечетное количество, показывает, куда можно поставить солдата
-                
+
                 """
                 if place_aval_circle(x, y) and place_aval_soldier(x, y) and place_aval_zone(blue_place_rect, x, y):
                     global ps
@@ -90,7 +90,6 @@ def execution():
                 """
                 Проверяет сколько солдат поставлено и при нажатии мыши ставит красного солдата, 
                 если их четное количество, показывает, куда можно поставить солдата
-
                 """
                 if place_aval_circle(x, y) and place_aval_soldier(x, y) and place_aval_zone(red_place_rect, x, y):
                     if ev.type == pygame.MOUSEBUTTONDOWN:
@@ -103,7 +102,7 @@ def execution():
             else:
                 """
                 если солдат 10, начинает игру
-                
+
                 """
                 if not is_game:
                     is_game = True
@@ -122,6 +121,10 @@ def execution():
                     inputstr = classes.Window(screen, input_rect, base_font, None)
 
                 inputstr.Input_window(user_formula)
+                fire = classes.Button(screen, [200, 800, 100, 50], smallfont, mousepos, ev)
+                global is_Fire
+                is_Fire = fire.Fire_button()[0]
+                active = fire.Fire_button()[1]
 
                 quit = classes.Button(screen, [500, 800, 100, 50], smallfont, mousepos, ev)
                 quit.Quit_button()
@@ -134,7 +137,7 @@ def execution():
                         user_formula += ev.unicode
 
         global find_red_soldier, find_blue_soldier, blue_turn_number, red_turn_number, x_fire, y_fire, n_fire, \
-            team_fire, current_length_sq, current_x, is_Fire
+            team_fire, current_length_sq, current_x
         """
         Глобальные переменные для запуска игры
         find_red_soldier - выбирается ли красный солдат для стрельбы ()
@@ -148,7 +151,7 @@ def execution():
         current_length_sq - текущий квардра длины графика (не превосходит L_MAX_SQ)
         current_x - текущая x - координата отрисовки, задает через graph_evaluate current_y
         is_Fire - ведется ли отрисовка графика
-        
+
         """
         if is_game:
             if find_red_soldier:  # выбирает красного солдата, который будет стрелять
@@ -234,7 +237,7 @@ def execution():
         inputstr.Input_window(user_formula)
         for s in soldiers:  # отрисовка солдат
             s.draw()
-        for c in circles: # отрисовка препятствий
+        for c in circles:  # отрисовка препятствий
             c.draw()
         lamp(screen, team_fire)  # отрисовка ламп
         lamp_soldier(screen, x_fire, y_fire, team_fire)
