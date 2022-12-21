@@ -144,22 +144,18 @@ class Marker:
         Args:
             number: номер стреляющего солдата
             team: команда, которой принадлежит солдат
-
         Returns:
-
         """
         for s in soldiers:
             if (s.x - self.x) ** 2 + (s.y - self.y) ** 2 <= R ** 2 and not (s.number == number and s.team == team):
                 s.hit()
 
-    def circle_hit_check(self, screen):
+    def circle_check_hit(self, screen):
         """
         Проверяет столкновение маркера с препятствиями, при столкновении создаёт дырку, при попадании в дырку ничего
         не происходит
         Args: screen: экран отрисовки дырки
-
         Returns: True, при столкновении
-
         """
         for c in circles:
             if (c.x - self.x) ** 2 + (c.y - self.y) ** 2 <= c.r ** 2:
@@ -168,6 +164,4 @@ class Marker:
                         break
                 WhiteCircle(screen, self.x, self.y)
                 return True
-
-
 

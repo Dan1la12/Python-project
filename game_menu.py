@@ -124,7 +124,6 @@ def execution():
                 fire = classes.Button(screen, [300, 800, 100, 50], smallfont, mousepos, ev)
                 if fire.Fire_button():
                     global is_Fire
-                    print('Fire!')
                     is_Fire = fire.Fire_button()[0]
                     active = fire.Fire_button()[1]
 
