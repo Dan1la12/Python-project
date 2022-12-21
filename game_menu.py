@@ -190,6 +190,7 @@ def execution():
                 if not markers:  # создает маркер, если его нет
                     Marker(x_fire, y_fire, team_fire, screen)
                 for m in markers:  # вызывает функции маркера
+                    print(m)
                     m.soldier_hit_check(n_fire, team_fire)
                     if current_length_sq < L_MAX_SQ:
                         current_x += 2
@@ -208,6 +209,7 @@ def execution():
                         is_Fire = False
                         find_blue_soldier = True
                         current_length_sq = 0
+                        current_x = 0
                         for l in lines:
                             if l.active:
                                 l.deactivate()
@@ -233,6 +235,7 @@ def execution():
                         is_Fire = False
                         find_red_soldier = True
                         current_length_sq = 0
+                        current_x = 0
                         for l in lines:
                             if l.active:
                                 l.deactivate()

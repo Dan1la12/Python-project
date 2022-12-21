@@ -162,8 +162,8 @@ class Marker:
         for c in circles:
             if (c.x - self.x) ** 2 + (c.y - self.y) ** 2 <= c.r ** 2:
                 for wc in white_circles:
-                    if (wc.x - self.x) ** 2 + (wc.y - self.y) ** 2 <= wc.r:
-                        break
+                    if (wc.x - self.x) ** 2 + (wc.y - self.y) ** 2 <= wc.r ** 2:
+                        return False
                 WhiteCircle(screen, self.x, self.y)
                 return True
 
