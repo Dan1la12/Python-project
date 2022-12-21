@@ -128,9 +128,11 @@ class Marker:
         :return: s - квадрат длинны графика
         """
         Line(self.x, self.y, x, y, self.screen, self.line_color())
+        s = (x - self.x) ** 2 + (y - self.y) ** 2
         self.x = x
         self.y = y
-        return (x - self.x) ** 2 + (y - self.y) ** 2
+        print(s)
+        return s
 
     def remove(self):
         """

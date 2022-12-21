@@ -1,8 +1,8 @@
 import pygame
 import sys
 import classes
-from Objects import Circle, circles, obj_generate
-from Players import place_aval_circle, place_aval_soldier, place_aval_zone, lamp, lamp_soldier
+from Objects import Circle, circles, obj_generate, white_circles
+from Players import place_aval_circle, place_aval_soldier, place_aval_zone, lamp, lamp_soldier, blue_team_alive, red_team_alive
 from Soldiers import PlaceCircle, soldiers, R, Soldier
 from graph_creator import Marker, markers, lines, graph_evaluate
 
@@ -45,7 +45,7 @@ text_fire = smallfont.render('Fire', True, WHITE)
 ps = PlaceCircle(screen, 'Red', 0, 0)
 o1 = Circle(screen, 300, 300, 50)
 circles.append(o1)
-
+obj_generated = False
 is_game = False
 find_red_soldier = True
 find_blue_soldier = False
@@ -66,6 +66,12 @@ def execution():
         game_window = classes.Window(screen, game_rect, base_font, None)
         game_window.Game_window()
         mousepos = pygame.mouse.get_pos()
+        for c in circles:  # отрисовка препятствий
+            c.draw()
+        global obj_generated
+        if not obj_generated:
+            obj_generate(screen)
+            obj_generated = True
         global is_game  # показывает началась игра, или нет
         for ev in pygame.event.get():
             global soldiers_count
@@ -80,7 +86,7 @@ def execution():
                     global ps
                     if ev.type == pygame.MOUSEBUTTONDOWN:
                         team = 'Blue'
-                        Soldier(x, y, team, screen, soldiers_count // 2 + 1)
+                        Soldier(x, y, team, screen, soldiers_count // 2)
                         soldiers_count += 1
                         ps = PlaceCircle(screen, 'Red', x, y)
                     ps.move(x, y)
@@ -94,7 +100,7 @@ def execution():
                 if place_aval_circle(x, y) and place_aval_soldier(x, y) and place_aval_zone(red_place_rect, x, y):
                     if ev.type == pygame.MOUSEBUTTONDOWN:
                         team = 'Red'
-                        Soldier(x, y, team, screen, soldiers_count // 2 + 1)
+                        Soldier(x, y, team, screen, soldiers_count // 2)
                         soldiers_count += 1
                         ps = PlaceCircle(screen, 'Blue', x, y)
                     ps.move(x, y)
@@ -184,14 +190,14 @@ def execution():
                 if not markers:  # создает маркер, если его нет
                     Marker(x_fire, y_fire, team_fire, screen)
                 for m in markers:  # вызывает функции маркера
-                    m.draw()
                     m.soldier_hit_check(n_fire, team_fire)
                     if current_length_sq < L_MAX_SQ:
-                        current_x += 0.01
+                        current_x += 2
                         if graph_evaluate(current_x, user_formula) != 'err':
-                            current_y = graph_evaluate(current_x, user_formula)
+                            current_y = graph_evaluate(current_x, user_formula) * -1
                             m.move(x_fire + current_x, y_fire + current_y)
                             current_length_sq += m.move(x_fire + current_x, y_fire + current_y)
+                            # print(m.move(x_fire + current_x, y_fire + current_y))
                         else:
                             current_length_sq = L_MAX_SQ  # для прекращения действия
                         if m.circle_check_hit(screen):
@@ -210,12 +216,11 @@ def execution():
                 if not markers:
                     Marker(x_fire, y_fire, team_fire, screen)
                 for m in markers:
-                    m.draw()
                     m.soldier_hit_check(n_fire, team_fire)
                     if current_length_sq < L_MAX_SQ:
-                        current_x -= 0.01
+                        current_x -= 2
                         if graph_evaluate(current_x, user_formula) != 'err':
-                            current_y = graph_evaluate(current_x, user_formula)
+                            current_y = graph_evaluate(current_x, user_formula) * -1
                             m.move(x_fire + current_x, y_fire + current_y)
                             current_length_sq += m.move(x_fire + current_x, y_fire + current_y)
                         else:
@@ -236,12 +241,19 @@ def execution():
         history.History_window()
         inputstr = classes.Window(screen, input_rect, base_font, None)
         inputstr.Input_window(user_formula)
+
+
+        for wc in white_circles:
+            wc.draw()
+        for l in lines:
+            l.draw()
         for s in soldiers:  # отрисовка солдат
             s.draw()
-        for c in circles:  # отрисовка препятствий
-            c.draw()
         lamp(screen, team_fire)  # отрисовка ламп
         lamp_soldier(screen, x_fire, y_fire, team_fire)
+        for m in markers:
+            m.draw()
+
 
         quit = classes.Button(screen, [500, 800, 100, 50], smallfont, mousepos, None)
         quit.Quit_button()

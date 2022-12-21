@@ -130,3 +130,7 @@ def lamp_soldier(screen, x, y, team):
     elif team == 'Blue':
         pygame.draw.circle(screen, GREEN, (x, y), R)
         pygame.draw.circle(screen, LIGHT_GREEN, (x, y), R_I)
+
+def draw_screen_border(screen):
+    pass
+    pygame.draw.rect(screen, GREEN, (0))
