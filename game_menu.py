@@ -121,10 +121,12 @@ def execution():
                     inputstr = classes.Window(screen, input_rect, base_font, None)
 
                 inputstr.Input_window(user_formula)
-                fire = classes.Button(screen, [200, 800, 100, 50], smallfont, mousepos, ev)
-                global is_Fire
-                is_Fire = fire.Fire_button()[0]
-                active = fire.Fire_button()[1]
+                fire = classes.Button(screen, [300, 800, 100, 50], smallfont, mousepos, ev)
+                if fire.Fire_button():
+                    global is_Fire
+                    print('Fire!')
+                    is_Fire = fire.Fire_button()[0]
+                    active = fire.Fire_button()[1]
 
                 quit = classes.Button(screen, [500, 800, 100, 50], smallfont, mousepos, ev)
                 quit.Quit_button()
