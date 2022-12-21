@@ -1,5 +1,7 @@
+import main_menu
+
 def main():
-    pass
+    main_menu.main()
 
 
 if __name__ == '__main()__':
