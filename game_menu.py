@@ -17,7 +17,7 @@ CYAN = (0, 255, 255)
 DARK = (100, 100, 100)
 BLACK = (0, 0, 0)
 COLORS = [WHITE, RED, BLUE, YELLOW, GREEN, MAGENTA, CYAN, DARK, BLACK]
-L_MAX_SQ = 200000
+L_MAX_SQ = 1000000
 current_length_sq = 0
 current_x = 0
 
@@ -30,7 +30,6 @@ input_rect = pygame.Rect(300, 750, 200, 30)
 game_rect = pygame.Rect(20, 20, 1040, 700)
 red_place_rect = pygame.Rect(20 + R, 20 + R, 520 - R, 700 - 2 * R)
 blue_place_rect = pygame.Rect(520 + R, 20 + R, 520 - R, 700 - 2 * R)
-marker_rect = pygame.Rect(20, 20, 1040, 700)
 
 color_active = pygame.Color('lightskyblue3')
 color_passive = pygame.Color('gray15')
@@ -57,7 +56,7 @@ y_fire = 0
 n_fire = 100
 team_fire = ''
 is_Fire = False
-dx = 2
+
 
 def execution():
     user_formula = ''
@@ -195,20 +194,20 @@ def execution():
                 if not markers:  # создает маркер, если его нет
                     Marker(x_fire, y_fire, team_fire, screen)
                 for m in markers:  # вызывает функции маркера
+                    print(m)
                     m.soldier_hit_check(n_fire, team_fire)
                     if current_length_sq < L_MAX_SQ:
-                        current_x += dx
+                        current_x += 2
                         if graph_evaluate(current_x, user_formula) != 'err':
                             current_y = graph_evaluate(current_x, user_formula) * -1
-                            current_length_sq += float(m.move(x_fire + current_x, y_fire + current_y))
-                            print(current_length_sq)
+                            m.move(x_fire + current_x, y_fire + current_y)
+                            current_length_sq += m.move(x_fire + current_x, y_fire + current_y)
+                            # print(m.move(x_fire + current_x, y_fire + current_y))
                         else:
                             current_length_sq = L_MAX_SQ  # для прекращения действия
                         if m.circle_check_hit(screen):
                             m.circle_check_hit(screen)
                             current_length_sq = L_MAX_SQ  # для прекращения действия
-                        if not place_aval_zone(marker_rect, m.x, m.y):
-                            current_length_sq = L_MAX_SQ
                     elif current_length_sq >= L_MAX_SQ:  # прекращает действие маркера
                         markers.remove(m)
                         is_Fire = False
@@ -225,16 +224,15 @@ def execution():
                 for m in markers:
                     m.soldier_hit_check(n_fire, team_fire)
                     if current_length_sq < L_MAX_SQ:
-                        current_x -= dx
+                        current_x -= 2
                         if graph_evaluate(current_x, user_formula) != 'err':
                             current_y = graph_evaluate(current_x, user_formula) * -1
-                            current_length_sq += float(m.move(x_fire + current_x, y_fire + current_y))
+                            m.move(x_fire + current_x, y_fire + current_y)
+                            current_length_sq += m.move(x_fire + current_x, y_fire + current_y)
                         else:
                             current_length_sq = L_MAX_SQ
                         if m.circle_check_hit(screen):
                             m.circle_check_hit(screen)
-                            current_length_sq = L_MAX_SQ
-                        if not place_aval_zone(marker_rect, m.x, m.y):
                             current_length_sq = L_MAX_SQ
                     elif current_length_sq >= L_MAX_SQ:
                         markers.remove(m)
@@ -260,6 +258,11 @@ def execution():
         lamp_soldier(screen, x_fire, y_fire, team_fire)
         for m in markers:
             m.draw()
+        
+        pygame.draw.rect(screen, GREEN, [0, 0, 1080, 20])
+        pygame.draw.rect(screen, GREEN, [0, 0, 20, 720])
+        pygame.draw.rect(screen, GREEN, [1060, 20, 20, 700])
+        pygame.draw.rect(screen, GREEN, [0, 720, 1080, 400])
 
 
         quit = classes.Button(screen, [500, 800, 100, 50], smallfont, mousepos, None)
