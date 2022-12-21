@@ -59,6 +59,3 @@ def main():
         # updates the frames of the game 
         pygame.display.update()
         clock.tick(120)
-
-
-main()
