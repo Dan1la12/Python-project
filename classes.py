@@ -83,8 +83,8 @@ class Button:
 
 
     def Play_button(self):
-        # if mouse is hovered on a button it 
-        # changes to lighter shade 
+        # if mouse is hovered on a button it
+        # changes to lighter shade
         text_play = self.font.render('Play', True, WHITE)
         if 150 <= self.mouse[0] <= 250 and 150 <= self.mouse[1] <= 200:
             pygame.draw.rect(self.screen, BLACK, self.rect)
@@ -98,17 +98,19 @@ class Button:
         self.screen.blit(text_play, (self.rect[0] + 25, self.rect[1]))
 
     def Fire_button(self):
-        # if mouse is hovered on a button it 
-        # changes to lighter shade 
+        # if mouse is hovered on a button it
+        # changes to lighter shade
         text_fire = self.font.render('Fire', True, WHITE)
         if 300 <= self.mouse[0] <= 400 and 800 <= self.mouse[1] <= 850:
             pygame.draw.rect(self.screen, BLACK, self.rect)
+            if self.event.type == pygame.MOUSEBUTTONDOWN:
+                return True
         else:
             pygame.draw.rect(self.screen, DARK, self.rect)
         self.screen.blit(text_fire, (self.rect[0] + 30, self.rect[1]))
 
     def Quit_button(self):
-        # if mouse is hovered on a button it 
+        # if mouse is hovered on a button it
         # changes to lighter shade
         if 500 <= self.mouse[0] <= 600 and 800 <= self.mouse[1] <= 850:
             pygame.draw.rect(self.screen, BLACK, self.rect)

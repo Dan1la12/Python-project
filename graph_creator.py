@@ -19,7 +19,7 @@ lines = []  # Список линий
 def graph_evaluate(i, graph_string):
     """
     Функция вычисляет значения выражения в строке graph_string при фиксированном i
-    выдаёт 'err', если не может вычислить
+    выдаёт 'err', если не может вычислить, или f(0) != 0
     Args:
     i - относительная координата, float
     graph_string - строка
@@ -27,15 +27,24 @@ def graph_evaluate(i, graph_string):
     sin(), cos(), exp()
     """
     graph_string_inside = ''
+    graph_string_zero = ''
     for j in graph_string:
         if j == 'x':
             graph_string_inside += str(i)
+            graph_string_zero += '0'
         else:
             graph_string_inside += str(j)
+            graph_string_zero += str(j)
+
     try:
         res = se.simple_eval(graph_string_inside, functions={'cos': lambda t: np.cos(t), 'sin': lambda t: np.sin(t),
                                                              'exp': lambda t: np.exp(t)})
-        return res
+        res1 = se.simple_eval(graph_string_zero, functions={'cos': lambda t: np.cos(t), 'sin': lambda t: np.sin(t),
+                                                             'exp': lambda t: np.exp(t)})
+        if res1 == 0:
+            return res
+        else:
+            return 'err'
     except:
         return 'err'
 
@@ -129,41 +138,36 @@ class Marker:
         """
         markers.remove(self)
 
-    def hit_check(self, obj):
-        """
-        Проверяет столкновение с объектом: препятствием или солдатом
-        если сталкивается с солддатом, идет дальше
-        если сталкивается с перпятствием и не попадает в уничтоженную область,
-            создает уничноженную область и деактивируется
-        :param obj: объект, с которым проверяется столкновение
-        """
-        for circle in white_circles:
-            if obj.alive and (self.x - obj.x) ** 2 + (self.y - obj.y) ** 2 <= obj.r ** 2 and (circle.x + self.x) ** 2 + \
-                    (circle.y + self.y) ** 2 >= circle.r ** 2:
-                """
-                Проверяет попадание в объект
-                """
-                obj.hit()
-                if obj.hit():
-                    """
-                    Проверяет, что попадание в препятствие а не в солдата
-                    """
-                    white_circle = WhiteCircle(self.screen, self.x, self.y)
-                    white_circles.append(white_circle)
-                    self.active = False
-
     def soldier_hit_check(self, number, team):
+        """
+        порверяет на столкновение маркера с солдатами, кроме того, кто делает ход (определяется командой и номером)
+        Args:
+            number: номер стреляющего солдата
+            team: команда, которой принадлежит солдат
+
+        Returns:
+
+        """
         for s in soldiers:
             if (s.x - self.x) ** 2 + (s.y - self.y) ** 2 <= R ** 2 and not (s.number == number and s.team == team):
                 s.hit()
 
-    def object_hit_check(self, screen):
+    def circle_hit_check(self, screen):
+        """
+        Проверяет столкновение маркера с препятствиями, при столкновении создаёт дырку, при попадании в дырку ничего
+        не происходит
+        Args: screen: экран отрисовки дырки
+
+        Returns: True, при столкновении
+
+        """
         for c in circles:
             if (c.x - self.x) ** 2 + (c.y - self.y) ** 2 <= c.r ** 2:
-                # for wc in white_circles:
-                #     if (wc.x - self.x) ** 2 + (wc.y - self.y) ** 2 <= wc.r:
-                #         break
+                for wc in white_circles:
+                    if (wc.x - self.x) ** 2 + (wc.y - self.y) ** 2 <= wc.r:
+                        break
                 WhiteCircle(screen, self.x, self.y)
+                return True
 
 
 
