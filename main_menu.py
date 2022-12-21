@@ -26,14 +26,12 @@ COLORS = [WHITE, RED, BLUE, YELLOW, GREEN, MAGENTA, CYAN, DARK, BLACK]
 
 global Exit
 Exit = False
-
 if not Exit:
     # screen recolution
     res = (360, 480)
 
-    # opens up a window 
+    # opens up a window
     screen = pygame.display.set_mode(res)
-
 
 def main():
     while not Exit:
@@ -59,3 +57,4 @@ def main():
         # updates the frames of the game 
         pygame.display.update()
         clock.tick(120)
+main()
