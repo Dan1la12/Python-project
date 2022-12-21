@@ -23,33 +23,14 @@ class Window:
 
     def Game_window(self):
         game_window = pygame.draw.rect(self.screen, WHITE, self.rect)
+        SCALE = 50
+        size = [self.rect[0] + self.rect[2] // SCALE, self.rect[1] + self.rect[3] // SCALE]
+        for i in range(0, size[0]):
+            pygame.draw.line(self.screen, BLACK, [i * SCALE, 0], [i * SCALE, size[1] * SCALE])
+        for i in range(0, size[1]):
+            pygame.draw.line(self.screen, BLACK, [0, i * SCALE], [size[0] * SCALE, i * SCALE])
         return game_window
 
-    def History_window(self):
-        history_rect = pygame.draw.rect(self.screen, WHITE, [650, 750, 400, 100])
-        if self.event != None:
-            if self.event.y == 1:
-                x += 1
-            if self.event.y == -1:
-                x -= 1
-        else:
-            pass
-        '''
-        if history_rect.collidepoint():
-            print('I am  here')
-            with open('History.txt', 'w') as History:
-                History.write(formula)
-            global active
-            active = False
-            '''
-        with open('History.txt', 'r') as History:
-            n = 0
-            for line in History:
-                n += 1
-                text_history = self.font.render(line[:-2], True, BLACK)
-                self.screen.blit(text_history, (670, 750 + 24 * n))
-                if n > 5:
-                    break
 
     def Input_window(self, formula):
         pygame.draw.rect(self.screen, BLACK, self.rect, 2)
