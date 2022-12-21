@@ -244,9 +244,6 @@ def execution():
                             if l.active:
                                 l.deactivate()
 
-        inputstr = classes.Window(screen, input_rect, base_font, None)
-        inputstr.Input_window(user_formula)
-
 
         for wc in white_circles:
             wc.draw()
@@ -264,6 +261,8 @@ def execution():
         pygame.draw.rect(screen, GREEN, [1060, 20, 20, 700])
         pygame.draw.rect(screen, GREEN, [0, 720, 1080, 400])
 
+        inputstr = classes.Window(screen, input_rect, base_font, None)
+        inputstr.Input_window(user_formula)
 
         quit = classes.Button(screen, [500, 800, 100, 50], smallfont, mousepos, None)
         quit.Quit_button()
