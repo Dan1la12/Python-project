@@ -131,7 +131,7 @@ class Marker:
         s = (x - self.x) ** 2 + (y - self.y) ** 2
         self.x = x
         self.y = y
-        print(s)
+        # print(s)
         return s
 
     def remove(self):
