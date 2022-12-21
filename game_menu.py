@@ -17,7 +17,7 @@ CYAN = (0, 255, 255)
 DARK = (100, 100, 100)
 BLACK = (0, 0, 0)
 COLORS = [WHITE, RED, BLUE, YELLOW, GREEN, MAGENTA, CYAN, DARK, BLACK]
-L_MAX_SQ = 1000000
+L_MAX_SQ = 200000
 current_length_sq = 0
 current_x = 0
 
@@ -30,6 +30,7 @@ input_rect = pygame.Rect(300, 750, 200, 30)
 game_rect = pygame.Rect(20, 20, 1040, 700)
 red_place_rect = pygame.Rect(20 + R, 20 + R, 520 - R, 700 - 2 * R)
 blue_place_rect = pygame.Rect(520 + R, 20 + R, 520 - R, 700 - 2 * R)
+marker_rect = pygame.Rect(20, 20, 1040, 700)
 
 color_active = pygame.Color('lightskyblue3')
 color_passive = pygame.Color('gray15')
@@ -56,19 +57,15 @@ y_fire = 0
 n_fire = 100
 team_fire = ''
 is_Fire = False
-
+dx = 2
 
 def execution():
     user_formula = ''
     while True:
         screen = pygame.display.set_mode((1080, 880))
-        game_window = classes.Window(screen, game_rect, base_font, None)
         screen.fill(GREEN)
+        game_window = classes.Window(screen, game_rect, base_font, None)
         game_window.Game_window()
-        pygame.draw.rect(screen, GREEN, [0, 0, 1080, 20])
-        pygame.draw.rect(screen, GREEN, [0, 0, 20, 720])
-        pygame.draw.rect(screen, GREEN, [1060, 20, 20, 700])
-        pygame.draw.rect(screen, GREEN, [0, 720, 1080, 400])
         mousepos = pygame.mouse.get_pos()
         for c in circles:  # отрисовка препятствий
             c.draw()
@@ -84,7 +81,6 @@ def execution():
                 """
                 Проверяет сколько солдат поставлено и при нажатии мыши ставит синего солдата, 
                 если их нечетное количество, показывает, куда можно поставить солдата
-
                 """
                 if place_aval_circle(x, y) and place_aval_soldier(x, y) and place_aval_zone(blue_place_rect, x, y):
                     global ps
@@ -112,7 +108,6 @@ def execution():
             else:
                 """
                 если солдат 10, начинает игру
-
                 """
                 if not is_game:
                     is_game = True
@@ -162,7 +157,6 @@ def execution():
         current_length_sq - текущий квардра длины графика (не превосходит L_MAX_SQ)
         current_x - текущая x - координата отрисовки, задает через graph_evaluate current_y
         is_Fire - ведется ли отрисовка графика
-
         """
         if is_game:
             if find_red_soldier:  # выбирает красного солдата, который будет стрелять
@@ -194,20 +188,20 @@ def execution():
                 if not markers:  # создает маркер, если его нет
                     Marker(x_fire, y_fire, team_fire, screen)
                 for m in markers:  # вызывает функции маркера
-                    print(m)
                     m.soldier_hit_check(n_fire, team_fire)
                     if current_length_sq < L_MAX_SQ:
-                        current_x += 2
+                        current_x += dx
                         if graph_evaluate(current_x, user_formula) != 'err':
                             current_y = graph_evaluate(current_x, user_formula) * -1
-                            m.move(x_fire + current_x, y_fire + current_y)
-                            current_length_sq += m.move(x_fire + current_x, y_fire + current_y)
-                            # print(m.move(x_fire + current_x, y_fire + current_y))
+                            current_length_sq += float(m.move(x_fire + current_x, y_fire + current_y))
+                            print(current_length_sq)
                         else:
                             current_length_sq = L_MAX_SQ  # для прекращения действия
                         if m.circle_check_hit(screen):
                             m.circle_check_hit(screen)
                             current_length_sq = L_MAX_SQ  # для прекращения действия
+                        if not place_aval_zone(marker_rect, m.x, m.y):
+                            current_length_sq = L_MAX_SQ
                     elif current_length_sq >= L_MAX_SQ:  # прекращает действие маркера
                         markers.remove(m)
                         is_Fire = False
@@ -224,15 +218,16 @@ def execution():
                 for m in markers:
                     m.soldier_hit_check(n_fire, team_fire)
                     if current_length_sq < L_MAX_SQ:
-                        current_x -= 2
+                        current_x -= dx
                         if graph_evaluate(current_x, user_formula) != 'err':
                             current_y = graph_evaluate(current_x, user_formula) * -1
-                            m.move(x_fire + current_x, y_fire + current_y)
-                            current_length_sq += m.move(x_fire + current_x, y_fire + current_y)
+                            current_length_sq += float(m.move(x_fire + current_x, y_fire + current_y))
                         else:
                             current_length_sq = L_MAX_SQ
                         if m.circle_check_hit(screen):
                             m.circle_check_hit(screen)
+                            current_length_sq = L_MAX_SQ
+                        if not place_aval_zone(marker_rect, m.x, m.y):
                             current_length_sq = L_MAX_SQ
                     elif current_length_sq >= L_MAX_SQ:
                         markers.remove(m)
@@ -243,6 +238,11 @@ def execution():
                         for l in lines:
                             if l.active:
                                 l.deactivate()
+
+        history = classes.Window(screen, None, base_font, None)
+        history.History_window()
+        inputstr = classes.Window(screen, input_rect, base_font, None)
+        inputstr.Input_window(user_formula)
 
 
         for wc in white_circles:
@@ -255,14 +255,7 @@ def execution():
         lamp_soldier(screen, x_fire, y_fire, team_fire)
         for m in markers:
             m.draw()
-        
-        pygame.draw.rect(screen, GREEN, [0, 0, 1080, 20])
-        pygame.draw.rect(screen, GREEN, [0, 0, 20, 720])
-        pygame.draw.rect(screen, GREEN, [1060, 20, 20, 700])
-        pygame.draw.rect(screen, GREEN, [0, 720, 1080, 400])
 
-        inputstr = classes.Window(screen, input_rect, base_font, None)
-        inputstr.Input_window(user_formula)
 
         quit = classes.Button(screen, [500, 800, 100, 50], smallfont, mousepos, None)
         quit.Quit_button()
