@@ -62,9 +62,13 @@ def execution():
     user_formula = ''
     while True:
         screen = pygame.display.set_mode((1080, 880))
-        screen.fill(GREEN)
         game_window = classes.Window(screen, game_rect, base_font, None)
+        screen.fill(GREEN)
         game_window.Game_window()
+        pygame.draw.rect(screen, GREEN, [0, 0, 1080, 20])
+        pygame.draw.rect(screen, GREEN, [0, 0, 20, 720])
+        pygame.draw.rect(screen, GREEN, [1060, 20, 20, 700])
+        pygame.draw.rect(screen, GREEN, [0, 720, 1080, 400])
         mousepos = pygame.mouse.get_pos()
         for c in circles:  # отрисовка препятствий
             c.draw()
@@ -240,8 +244,6 @@ def execution():
                             if l.active:
                                 l.deactivate()
 
-        history = classes.Window(screen, None, base_font, None)
-        history.History_window()
         inputstr = classes.Window(screen, input_rect, base_font, None)
         inputstr.Input_window(user_formula)
 
