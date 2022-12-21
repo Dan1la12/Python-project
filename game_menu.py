@@ -44,8 +44,6 @@ smallfont = pygame.font.SysFont('Corbel', 35)
 text_quit = smallfont.render('Quit', True, WHITE)
 text_fire = smallfont.render('Fire', True, WHITE)
 ps = PlaceCircle(screen, 'Red', 0, 0)
-o1 = Circle(screen, 300, 300, 50)
-circles.append(o1)
 obj_generated = False
 is_game = False
 find_red_soldier = True
@@ -194,7 +192,6 @@ def execution():
                         if graph_evaluate(current_x, user_formula) != 'err':
                             current_y = graph_evaluate(current_x, user_formula) * -1
                             current_length_sq += float(m.move(x_fire + current_x, y_fire + current_y))
-                            print(current_length_sq)
                         else:
                             current_length_sq = L_MAX_SQ  # для прекращения действия
                         if m.circle_check_hit(screen):
@@ -239,12 +236,6 @@ def execution():
                             if l.active:
                                 l.deactivate()
 
-        history = classes.Window(screen, None, base_font, None)
-        history.History_window()
-        inputstr = classes.Window(screen, input_rect, base_font, None)
-        inputstr.Input_window(user_formula)
-
-
         for wc in white_circles:
             wc.draw()
         for l in lines:
@@ -255,6 +246,14 @@ def execution():
         lamp_soldier(screen, x_fire, y_fire, team_fire)
         for m in markers:
             m.draw()
+
+        pygame.draw.rect(screen, GREEN, [0, 0, 1080, 20])
+        pygame.draw.rect(screen, GREEN, [0, 0, 20, 720])
+        pygame.draw.rect(screen, GREEN, [1060, 20, 20, 700])
+        pygame.draw.rect(screen, GREEN, [0, 720, 1080, 400])
+
+        inputstr = classes.Window(screen, input_rect, base_font, None)
+        inputstr.Input_window(user_formula)
 
 
         quit = classes.Button(screen, [500, 800, 100, 50], smallfont, mousepos, None)
